@@ -1,0 +1,12 @@
+{
+    "type": "response.content_part.added",
+    "event_id": "event_AJo4GoUvv3YzqPu6EaoX1",
+    "response_id": "resp_AJo4GxyBYp6649KRjtvM6",
+    "item_id": "item_AJo4GKwKTM0Fp9hzNyGl9",
+    "output_index": 0,
+    "content_index": 0,
+    "part": {
+        "type": "audio",
+        "transcript": "Sure! From Paris, you have a lot of travel options. You can easily access many countries, especially within Europe, due to the extensive rail and flight networks. Here are some countries you can easily travel to:\n\n1. Belgium\n2. Germany\n3. Switzerland\n4. Italy\n5. Spain\n6. Luxembourg\n7. Netherlands\n8. United Kingdom\n9. Portugal\n10. Austria\n\nThese are just a few examples. Is there a specific destination you're interested in?"
+    }
+}

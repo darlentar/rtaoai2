@@ -1,0 +1,9 @@
+{
+    "type": "response.audio_transcript.delta",
+    "event_id": "event_AJo4HWxynnlRZzuamY6vx",
+    "response_id": "resp_AJo4GxyBYp6649KRjtvM6",
+    "item_id": "item_AJo4GKwKTM0Fp9hzNyGl9",
+    "output_index": 0,
+    "content_index": 0,
+    "delta": " due"
+}

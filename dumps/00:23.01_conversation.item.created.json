@@ -1,0 +1,18 @@
+{
+    "type": "conversation.item.created",
+    "event_id": "event_AJo4GUEpSiYYyKepZTqrP",
+    "previous_item_id": "item_AJo42aM1FDkJEs53yLBnF",
+    "item": {
+        "id": "item_AJo4GmJSnaRdjTGqHSC9B",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "completed",
+        "role": "user",
+        "content": [
+            {
+                "type": "input_audio",
+                "transcript": null
+            }
+        ]
+    }
+}

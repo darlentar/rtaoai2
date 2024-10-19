@@ -1,0 +1,14 @@
+{
+    "event_id": "evt_hwCuDxz3FNMmHaogH",
+    "type": "conversation.item.create",
+    "item": {
+        "type": "message",
+        "role": "user",
+        "content": [
+            {
+                "type": "input_text",
+                "text": "Hello!"
+            }
+        ]
+    }
+}

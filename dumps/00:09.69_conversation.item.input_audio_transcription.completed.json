@@ -1,0 +1,7 @@
+{
+    "type": "conversation.item.input_audio_transcription.completed",
+    "event_id": "event_AJo42CCisb7WCr3wbMJdv",
+    "item_id": "item_AJo42m4cONSWTo5PQnuOJ",
+    "content_index": 0,
+    "transcript": ""
+}

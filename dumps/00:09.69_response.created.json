@@ -1,0 +1,14 @@
+{
+    "type": "response.created",
+    "event_id": "event_AJo42vbGZWynVkxsPzYEB",
+    "response": {
+        "object": "realtime.response",
+        "id": "resp_AJo42KHqH1asaxhr6f1S8",
+        "status": "in_progress",
+        "status_details": null,
+        "output": [
+            "item_AJo42aM1FDkJEs53yLBnF"
+        ],
+        "usage": null
+    }
+}

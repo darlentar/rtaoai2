@@ -1,0 +1,11 @@
+{
+    "type": "error",
+    "event_id": "event_AJoISgOFSc84s5sFLJnep",
+    "error": {
+        "type": "invalid_request_error",
+        "code": "session_expired",
+        "message": "Your session hit the maximum duration of 15 minutes.",
+        "param": null,
+        "event_id": null
+    }
+}

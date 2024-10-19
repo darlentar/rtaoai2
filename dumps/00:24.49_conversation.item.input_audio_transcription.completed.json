@@ -1,0 +1,7 @@
+{
+    "type": "conversation.item.input_audio_transcription.completed",
+    "event_id": "event_AJo4HqeRcr6HeYEB26aR9",
+    "item_id": "item_AJo4GmJSnaRdjTGqHSC9B",
+    "content_index": 0,
+    "transcript": "Oui, j'aimerais savoir s'il y a quelque chose que je peux faire et si vous pouvez me lister tous les pays que je peux acc\u00e9der \u00e0 de Paris.\n"
+}

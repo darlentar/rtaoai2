@@ -1,0 +1,14 @@
+{
+    "type": "response.output_item.added",
+    "event_id": "event_AJo4GNf2P7vpOdWNntj4p",
+    "response_id": "resp_AJo4GxyBYp6649KRjtvM6",
+    "output_index": 0,
+    "item": {
+        "id": "item_AJo4GKwKTM0Fp9hzNyGl9",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "in_progress",
+        "role": "assistant",
+        "content": []
+    }
+}

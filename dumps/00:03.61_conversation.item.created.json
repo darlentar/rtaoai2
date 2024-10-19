@@ -1,0 +1,18 @@
+{
+    "type": "conversation.item.created",
+    "event_id": "event_AJo3wVh6MjMVNZckt6Mci",
+    "previous_item_id": null,
+    "item": {
+        "id": "item_AJo3w4U7l1RzgpedD6xH3",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "completed",
+        "role": "user",
+        "content": [
+            {
+                "type": "input_text",
+                "text": "Hello!"
+            }
+        ]
+    }
+}

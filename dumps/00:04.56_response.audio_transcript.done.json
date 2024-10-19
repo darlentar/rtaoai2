@@ -1,0 +1,9 @@
+{
+    "type": "response.audio_transcript.done",
+    "event_id": "event_AJo3xYJTsOab93ITHuwxQ",
+    "response_id": "resp_AJo3wLPQ6T1KDpfwaZoBw",
+    "item_id": "item_AJo3wWpGelGjKm8tX2iLu",
+    "output_index": 0,
+    "content_index": 0,
+    "transcript": "Hello! How can I help you today?"
+}

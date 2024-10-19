@@ -1,0 +1,9 @@
+{
+    "type": "response.audio.delta",
+    "event_id": "event_AJo43lsDQoimAPeWLmxZT",
+    "response_id": "resp_AJo42KHqH1asaxhr6f1S8",
+    "item_id": "item_AJo42aM1FDkJEs53yLBnF",
+    "output_index": 0,
+    "content_index": 0,
+    "delta": "[trimmed: 16000 bytes]"
+}

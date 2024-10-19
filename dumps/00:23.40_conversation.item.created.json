@@ -1,0 +1,13 @@
+{
+    "type": "conversation.item.created",
+    "event_id": "event_AJo4GvERHbKfkrwT3bPVy",
+    "previous_item_id": "item_AJo4GmJSnaRdjTGqHSC9B",
+    "item": {
+        "id": "item_AJo4GKwKTM0Fp9hzNyGl9",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "in_progress",
+        "role": "assistant",
+        "content": []
+    }
+}

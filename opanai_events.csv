@@ -1,0 +1,117 @@
+time;emiter;event
+00:03.44;client;session.update
+00:03.44;client;conversation.item.create
+00:03.44;client;response.create
+00:03.47;server;session.created
+00:03.61;server;session.updated
+00:03.61;server;conversation.item.created
+00:03.61;server;response.created
+00:04.16;server;rate_limits.updated
+00:04.16;server;response.output_item.added
+00:04.16;server;conversation.item.created
+00:04.16;server;response.content_part.added
+00:04.16;server;response.audio_transcript.delta (4)
+00:04.16;server;response.audio.delta (2)
+00:04.18;server;response.audio_transcript.delta
+00:04.28;server;response.audio.delta
+00:04.28;server;response.audio_transcript.delta (4)
+00:04.28;server;response.audio.delta (2)
+00:04.33;server;response.audio_transcript.delta (2)
+00:04.41;server;response.audio.delta (6)
+00:04.56;server;response.audio.done
+00:04.56;server;response.audio_transcript.done
+00:04.56;server;response.content_part.done
+00:04.56;server;response.output_item.done
+00:04.56;server;response.done
+00:09.26;client;input_audio_buffer.append
+00:09.26;client;input_audio_buffer.commit
+00:09.26;client;response.create
+00:09.51;server;input_audio_buffer.committed
+00:09.52;server;conversation.item.created
+00:09.69;server;conversation.item.input_audio_transcription.completed
+00:09.69;server;response.created
+00:09.74;server;rate_limits.updated
+00:09.74;server;response.output_item.added
+00:09.74;server;conversation.item.created
+00:09.74;server;response.content_part.added
+00:09.74;server;response.audio_transcript.delta (8)
+00:09.85;server;response.audio.delta (2)
+00:09.89;server;response.audio_transcript.delta
+00:09.90;server;response.audio.delta
+00:09.96;server;response.audio_transcript.delta (6)
+00:09.98;server;response.audio.delta (8)
+00:10.17;server;response.audio.done
+00:10.17;server;response.audio_transcript.done
+00:10.18;server;response.content_part.done
+00:10.20;server;response.output_item.done
+00:10.20;server;response.done
+00:13.22;client;input_audio_buffer.append (114)
+00:22.83;client;input_audio_buffer.commit
+00:22.83;client;response.create
+00:23.01;server;input_audio_buffer.committed
+00:23.01;server;conversation.item.created
+00:23.01;server;response.created
+00:23.39;server;rate_limits.updated
+00:23.40;server;response.output_item.added
+00:23.40;server;conversation.item.created
+00:23.41;server;response.content_part.added
+00:23.41;server;response.audio_transcript.delta (8)
+00:23.52;server;response.audio.delta (2)
+00:23.56;server;response.audio_transcript.delta
+00:23.58;server;response.audio.delta (4)
+00:23.70;server;response.audio_transcript.delta (8)
+00:24.01;server;response.audio.delta (2)
+00:24.01;server;response.audio_transcript.delta
+00:24.04;server;response.audio.delta
+00:24.04;server;response.audio_transcript.delta (8)
+00:24.13;server;response.audio.delta (8)
+00:24.28;server;response.audio_transcript.delta
+00:24.28;server;response.audio.delta
+00:24.28;server;response.audio_transcript.delta (10)
+00:24.28;server;response.audio.delta (14)
+00:24.47;server;response.audio_transcript.delta
+00:24.48;server;response.audio.delta
+00:24.49;server;conversation.item.input_audio_transcription.completed
+00:24.49;server;response.audio_transcript.delta (8)
+00:24.57;server;response.audio.delta (14)
+00:24.83;server;response.audio_transcript.delta
+00:24.84;server;response.audio.delta
+00:24.84;server;response.audio_transcript.delta (12)
+00:24.94;server;response.audio.delta (14)
+00:25.21;server;response.audio_transcript.delta
+00:25.23;server;response.audio.delta
+00:25.23;server;response.audio_transcript.delta (6)
+00:25.30;server;response.audio.delta (14)
+00:25.58;server;response.audio_transcript.delta
+00:25.58;server;response.audio.delta
+00:25.58;server;response.audio_transcript.delta (18)
+00:25.71;server;response.audio.delta (14)
+00:26.00;server;response.audio_transcript.delta
+00:26.10;server;response.audio.delta
+00:26.10;server;response.audio_transcript.delta (12)
+00:26.14;server;response.audio.delta (14)
+00:26.41;server;response.audio_transcript.delta
+00:26.42;server;response.audio.delta
+00:26.42;server;response.audio_transcript.delta (12)
+00:26.46;server;response.audio.delta (14)
+00:26.73;server;response.audio_transcript.delta
+00:26.74;server;response.audio.delta
+00:26.74;server;response.audio_transcript.delta (16)
+00:26.86;server;response.audio.delta (14)
+00:27.12;server;response.audio_transcript.delta
+00:27.13;server;response.audio.delta
+00:27.13;server;response.audio_transcript.delta (12)
+00:27.23;server;response.audio.delta (14)
+00:27.50;server;response.audio_transcript.delta
+00:27.51;server;response.audio.delta
+00:27.51;server;response.audio_transcript.delta (14)
+00:27.61;server;response.audio.delta (14)
+00:27.92;server;response.audio_transcript.delta
+00:27.99;server;response.audio.delta
+00:27.99;server;response.audio_transcript.delta (6)
+00:28.04;server;response.audio.delta (20)
+00:28.52;server;response.audio.done
+00:28.53;server;response.audio_transcript.done
+00:28.53;server;response.content_part.done
+00:28.53;server;response.output_item.done
+00:28.53;server;response.done

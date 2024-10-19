@@ -1,0 +1,39 @@
+{
+    "type": "response.done",
+    "event_id": "event_AJo4L2esIPItDZEn9icSJ",
+    "response": {
+        "object": "realtime.response",
+        "id": "resp_AJo4GxyBYp6649KRjtvM6",
+        "status": "completed",
+        "status_details": null,
+        "output": [
+            {
+                "id": "item_AJo4GKwKTM0Fp9hzNyGl9",
+                "object": "realtime.item",
+                "type": "message",
+                "status": "completed",
+                "role": "assistant",
+                "content": [
+                    {
+                        "type": "audio",
+                        "transcript": "Sure! From Paris, you have a lot of travel options. You can easily access many countries, especially within Europe, due to the extensive rail and flight networks. Here are some countries you can easily travel to:\n\n1. Belgium\n2. Germany\n3. Switzerland\n4. Italy\n5. Spain\n6. Luxembourg\n7. Netherlands\n8. United Kingdom\n9. Portugal\n10. Austria\n\nThese are just a few examples. Is there a specific destination you're interested in?"
+                    }
+                ]
+            }
+        ],
+        "usage": {
+            "total_tokens": 1080,
+            "input_tokens": 368,
+            "output_tokens": 712,
+            "input_token_details": {
+                "cached_tokens": 0,
+                "text_tokens": 180,
+                "audio_tokens": 188
+            },
+            "output_token_details": {
+                "text_tokens": 136,
+                "audio_tokens": 576
+            }
+        }
+    }
+}

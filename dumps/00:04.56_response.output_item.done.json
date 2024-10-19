@@ -1,0 +1,19 @@
+{
+    "type": "response.output_item.done",
+    "event_id": "event_AJo3xXGU33GPfM3WV40SP",
+    "response_id": "resp_AJo3wLPQ6T1KDpfwaZoBw",
+    "output_index": 0,
+    "item": {
+        "id": "item_AJo3wWpGelGjKm8tX2iLu",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "completed",
+        "role": "assistant",
+        "content": [
+            {
+                "type": "audio",
+                "transcript": "Hello! How can I help you today?"
+            }
+        ]
+    }
+}

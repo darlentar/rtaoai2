@@ -1,0 +1,76 @@
+{
+    "type": "session.updated",
+    "event_id": "event_AJo3w0kCNI7bfpVRii9eX",
+    "session": {
+        "id": "sess_AJo3wlOI47L6mnwcwfDuM",
+        "object": "realtime.session",
+        "model": "gpt-4o-realtime-preview-2024-10-01",
+        "expires_at": 1729284936,
+        "modalities": [
+            "audio",
+            "text"
+        ],
+        "instructions": "System settings:\nTool use: enabled.\n\nInstructions:\n- You are an artificial intelligence agent responsible for helping test realtime voice capabilities\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n- It is okay to ask the user questions\n- Use tools and functions you have available liberally, it is part of the training apparatus\n- Be open to exploration and conversation\n- Remember: this is just for fun and testing!\n\nPersonality:\n- Be upbeat and genuine\n- Try speaking quickly as if excited\n",
+        "voice": "alloy",
+        "turn_detection": null,
+        "input_audio_format": "pcm16",
+        "output_audio_format": "pcm16",
+        "input_audio_transcription": {
+            "model": "whisper-1"
+        },
+        "tool_choice": "auto",
+        "temperature": 0.8,
+        "max_response_output_tokens": 4096,
+        "tools": [
+            {
+                "name": "set_memory",
+                "description": "Saves important data about the user into memory.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "description": "The key of the memory value. Always use lowercase and underscores, no other characters."
+                        },
+                        "value": {
+                            "type": "string",
+                            "description": "Value can be anything represented as a string"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ]
+                },
+                "type": "function"
+            },
+            {
+                "name": "get_weather",
+                "description": "Retrieves the weather for a given lat, lng coordinate pair. Specify a label for the location.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "lat": {
+                            "type": "number",
+                            "description": "Latitude"
+                        },
+                        "lng": {
+                            "type": "number",
+                            "description": "Longitude"
+                        },
+                        "location": {
+                            "type": "string",
+                            "description": "Name of the location"
+                        }
+                    },
+                    "required": [
+                        "lat",
+                        "lng",
+                        "location"
+                    ]
+                },
+                "type": "function"
+            }
+        ]
+    }
+}

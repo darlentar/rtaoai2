@@ -1,0 +1,19 @@
+{
+    "type": "response.output_item.done",
+    "event_id": "event_AJo43ONPT8hYtFufwIeam",
+    "response_id": "resp_AJo42KHqH1asaxhr6f1S8",
+    "output_index": 0,
+    "item": {
+        "id": "item_AJo42aM1FDkJEs53yLBnF",
+        "object": "realtime.item",
+        "type": "message",
+        "status": "completed",
+        "role": "assistant",
+        "content": [
+            {
+                "type": "audio",
+                "transcript": "Hey there! What can I do for you?"
+            }
+        ]
+    }
+}

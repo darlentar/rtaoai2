@@ -1,0 +1,12 @@
+{
+    "type": "response.content_part.added",
+    "event_id": "event_AJo42VVWzz0qZCKtpaOTb",
+    "response_id": "resp_AJo42KHqH1asaxhr6f1S8",
+    "item_id": "item_AJo42aM1FDkJEs53yLBnF",
+    "output_index": 0,
+    "content_index": 0,
+    "part": {
+        "type": "audio",
+        "transcript": "Hey there! What can I do for you?"
+    }
+}
