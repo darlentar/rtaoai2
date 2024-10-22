@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
@@ -9,8 +9,68 @@ import Conversations, {ConversationsModel} from './Conversations';
 // WebSocket URL (replace with your WebSocket server URL)
 const WEBSOCKET_URL = 'ws://127.0.0.1:8000/ws';
 
+function playPcm16Base64Audio(globalCurrentTime: MutableRefObject<number>, audioContext: MutableRefObject<AudioContext>, base64String: string, sampleRate = 16000, numChannels = 1) {
+  // Use globalCurrentTime to ensure that multiple function calls are scheduled properly
+  let startTime = Math.max(globalCurrentTime.current, audioContext.current.currentTime); // Ensure it's at least the current audio context time
+
+  // Decode the base64 string to an ArrayBuffer
+  const audioData = base64ToArrayBuffer(base64String);
+
+  // Convert PCM 16-bit little-endian to AudioBuffer
+  const audioBuffer = convertPcm16ToAudioBuffer(audioData, audioContext.current, sampleRate, numChannels);
+
+  // Schedule the audio to play after the previous one finishes
+  playAudioBuffer(audioBuffer, audioContext.current, startTime);
+
+  // Increment startTime for the next audio clip
+  startTime += audioBuffer.duration; // This makes sure the next clip is scheduled after the current one ends
+
+  // Update globalCurrentTime after the current array is scheduled
+  globalCurrentTime.current = startTime;
+}
+
+// Helper function to decode base64 to ArrayBuffer
+function base64ToArrayBuffer(base64: string) {
+  const binaryString = atob(base64);
+  const length = binaryString.length;
+  const buffer = new ArrayBuffer(length);
+  const view = new Uint8Array(buffer);
+
+  for (let i = 0; i < length; i++) {
+    view[i] = binaryString.charCodeAt(i);
+  }
+
+  return buffer;
+}
+
+// Helper function to convert PCM 16-bit little-endian to AudioBuffer
+function convertPcm16ToAudioBuffer(arrayBuffer: ArrayBuffer, audioContext: BaseAudioContext, sampleRate: number, numChannels: number) {
+  const dataView = new DataView(arrayBuffer);
+  const numSamples = arrayBuffer.byteLength / 2; // 16-bit audio (2 bytes per sample)
+
+  // Create an empty AudioBuffer
+  const audioBuffer = audioContext.createBuffer(numChannels, numSamples, sampleRate);
+
+  // Fill the AudioBuffer with the decoded PCM data
+  for (let channel = 0; channel < numChannels; channel++) {
+    const buffer = audioBuffer.getChannelData(channel);
+    for (let i = 0; i < numSamples; i++) {
+      buffer[i] = dataView.getInt16(i * 2, true) / 32768; // 16-bit PCM is in range [-32768, 32767]
+    }
+  }
+
+  return audioBuffer;
+}
+
+// Helper function to play AudioBuffer at a specified time
+function playAudioBuffer(audioBuffer: AudioBuffer, audioContext: BaseAudioContext, startTime: number) {
+  const source = audioContext.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(audioContext.destination);
+  source.start(startTime); // Schedule to start at the given time
+}
 function initConversation(n: number) {
-    return {input_transcript: [], output_transcript: [], number: n};
+  return {input_transcript: [], output_transcript: [], number: n};
 }
 
 function App() {
@@ -20,6 +80,13 @@ function App() {
   const [conversationItems, setConversationItems] = useState<ConversationModel[]>([]);
   const [conversation, setConversation] = useState<ConversationModel>(initConversation(0));
   const [conversationIsFinished, setConversationIsFinished] = useState(false);
+
+
+  const audioContext = useRef(new (window.AudioContext)());
+  const globalCurrentTime = useRef(audioContext.current.currentTime);
+
+
+
   const { sendMessage, lastMessage, readyState } = useWebSocket(WEBSOCKET_URL, {
     onMessage: (event) => {
       const parsedEvent = JSON.parse(event.data);
@@ -34,6 +101,9 @@ function App() {
 	setConversationItems(i => [conversation, ...i]);
 	setConversation(initConversation(conversationItems.length+1));
 	setConversationIsFinished(false);
+      }
+      else if(parsedEvent.type === "audio") {
+	playPcm16Base64Audio(globalCurrentTime, audioContext, parsedEvent.data, 24000, 1);
       }
     }
   }
