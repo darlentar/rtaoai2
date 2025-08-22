@@ -1,6 +1,6 @@
 import inspect
 import json
-from typing import Callable, Literal, get_args, get_origin
+from typing import Any, Callable, Literal, get_args, get_origin, get_args, get_origin
 
 
 def make_audio(audio: str):
@@ -11,30 +11,30 @@ def make_audio_commit():
     return {"type": "input_audio_buffer.commit"}
 
 
-def tool_to_tool_json(tool: Callable) -> dict[str, object]:
+def tool_to_tool_json(tool: Callable) -> dict[str, Any]:
     description = tool.__doc__
     name = tool.__name__
-    properties: dict[str, dict[str, object]] = {}
+    properties: dict[str, dict[str, Any]] = {}
     required: list[str] = []
     for p in inspect.signature(tool).parameters.values():
         if p.annotation is str:
-            property: dict[str, object] = {"type": "string"}
+            prop: dict[str, Any] = {"type": "string"}
         elif p.annotation is int:
-            property = {"type": "integer"}
+            prop = {"type": "integer"}
         elif p.annotation is float:
-            property = {"type": "number"}
+            prop = {"type": "number"}
         elif get_origin(p.annotation) is Literal:
-            property = {
+            prop = {
                 "type": "string",
                 "enum": list(get_args(p.annotation)),
             }
         else:
             raise NotImplementedError(f"annotation: {p.annotation}")
-        properties[p.name] = property
+        properties[p.name] = prop
         # TODO: Support optional args
         required.append(p.name)
 
-    parameters = {
+    parameters: dict[str, Any] = {
         "type": "object",
         "properties": properties,
         "required": required,
@@ -47,11 +47,10 @@ def tool_to_tool_json(tool: Callable) -> dict[str, object]:
     }
 
 
-def make_response_create(tools: list[Callable]) -> dict[str, object]:
-    session_tools: list[dict[str, object]] = []
-    for tool in tools:
-        tool_json = tool_to_tool_json(tool)
-        session_tools.append(tool_json)
+def make_response_create(tools: list[Callable]) -> dict[str, Any]:
+    session_tools: list[dict[str, Any]] = []
+    for tool_fn in tools:
+        session_tools.append(tool_to_tool_json(tool_fn))
     return {
         "type": "response.create",
         "response": {
@@ -60,11 +59,10 @@ def make_response_create(tools: list[Callable]) -> dict[str, object]:
     }
 
 
-def make_session_update(tools: list[Callable]) -> dict[str, object]:
-    session_tools: list[dict[str, object]] = []
-    for tool in tools:
-        tool_json = tool_to_tool_json(tool)
-        session_tools.append(tool_json)
+def make_session_update(tools: list[Callable]) -> dict[str, Any]:
+    session_tools: list[dict[str, Any]] = []
+    for tool_fn in tools:
+        session_tools.append(tool_to_tool_json(tool_fn))
     return {
         "type": "session.update",
         "session": {
