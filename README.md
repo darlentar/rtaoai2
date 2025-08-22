@@ -1,6 +1,6 @@
 # rtaoai2
 
-This project uses [rye](https://rye.astral.sh)
+This project uses [rye](https://rye.astral.sh) and requires Python 3.13+.
 To run it
 
 Run the backend
