@@ -8,7 +8,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import websockets
 
-from rtaoai2.openai.consumer import OpenAIEventConsumer, OpenAIStreamingEventConsummer
+from rtaoai2.openai.consumer import OpenAIEventConsumer, OpenAIStreamingEventConsumer
 from rtaoai2.openai.producer import OpenAIEventProducer
 from rtaoai2.ui.consumer import EventConsumer
 from rtaoai2.ui.producer import EventProducer
@@ -104,7 +104,7 @@ async def websocket_endpoint(websocket: WebSocket):
     ui_event_consumer = EventConsumer(openai_event_producer)
 
     ui_event_producer = EventProducer(websocket)
-    openai_event_consumer = OpenAIStreamingEventConsummer(
+    openai_event_consumer = OpenAIStreamingEventConsumer(
         OpenAIEventConsumer(), ui_event_producer
     )
 

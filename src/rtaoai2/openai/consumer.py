@@ -92,14 +92,14 @@ class OpenAIWaitInputTranscriptEventConsumer:
             self.process_event_state = ResponseState.WAITING_RESPONSE_DONE
 
 
-class OpenAIStreamingEventConsummer:
-    def __init__(self, event_consummer, response_producer):
-        self.event_consummer = event_consummer
+class OpenAIStreamingEventConsumer:
+    def __init__(self, event_consumer, response_producer):
+        self.event_consumer = event_consumer
         self.response_producer = response_producer
 
     async def on_event(self, event):
         try:
-            event = self.event_consummer.process_event(event)
+            event = self.event_consumer.process_event(event)
         except UnknownEventError:
             event = None
         if isinstance(event, ResponseAudioDeltaEvent):
