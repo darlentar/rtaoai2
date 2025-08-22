@@ -22,8 +22,8 @@ requires-python = ">=3.13"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[dependency-groups.dev]
-dependencies = [
+[dependency-groups]
+dev = [
     "pytest",
     "ruff",
     "pytest-asyncio",
