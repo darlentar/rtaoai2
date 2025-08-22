@@ -3,7 +3,7 @@ from rtaoai2.openai.consumer import (
     OpenAIEventConsumer,
     UnknownEventError,
     OpenAIWaitInputTranscriptEventConsumer,
-    OpenAIStreamingEventConsummer,
+    OpenAIStreamingEventConsumer,
 )
 
 import pytest
@@ -215,8 +215,8 @@ async def test_response_producer_ui(
         expected_events.append(("write_response_audio", ""))
 
     response_producer_spy = ResponseProducerConsoleSpy()
-    events_consumer = OpenAIStreamingEventConsummer(
-        event_consummer=OpenAIEventConsumer(), response_producer=response_producer_spy
+    events_consumer = OpenAIStreamingEventConsumer(
+        event_consumer=OpenAIEventConsumer(), response_producer=response_producer_spy
     )
     for e in events_json(".")[48:]:
         await events_consumer.on_event(e)
