@@ -1,4 +1,4 @@
-time;emiter;event
+time;emitter;event
 00:03.44;client;session.update
 00:03.44;client;conversation.item.create
 00:03.44;client;response.create
