@@ -1,11 +1,10 @@
 from typing import ClassVar
+
 from pydantic import BaseModel
 
 
 class Event(BaseModel):
-    @property
-    def name(self):
-        raise NotImplementedError
+    name: ClassVar[str]
 
 
 class ResponseAudioDeltaEvent(Event):

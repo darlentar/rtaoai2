@@ -1,6 +1,6 @@
 import inspect
 import json
-from typing import Callable, Literal, get_origin, get_args
+from typing import Callable, Literal, get_args, get_origin
 
 
 def make_audio(audio: str):
@@ -11,14 +11,14 @@ def make_audio_commit():
     return {"type": "input_audio_buffer.commit"}
 
 
-def tool_to_tool_json(tool: Callable):
+def tool_to_tool_json(tool: Callable) -> dict[str, object]:
     description = tool.__doc__
     name = tool.__name__
-    properties = {}
-    required = []
+    properties: dict[str, dict[str, object]] = {}
+    required: list[str] = []
     for p in inspect.signature(tool).parameters.values():
         if p.annotation is str:
-            property = {"type": "string"}
+            property: dict[str, object] = {"type": "string"}
         elif p.annotation is int:
             property = {"type": "integer"}
         elif p.annotation is float:
@@ -47,11 +47,11 @@ def tool_to_tool_json(tool: Callable):
     }
 
 
-def make_response_create(tools: list[Callable]):
-    session_tools = []
+def make_response_create(tools: list[Callable]) -> dict[str, object]:
+    session_tools: list[dict[str, object]] = []
     for tool in tools:
-        tool = tool_to_tool_json(tool)
-        session_tools.append(tool)
+        tool_json = tool_to_tool_json(tool)
+        session_tools.append(tool_json)
     return {
         "type": "response.create",
         "response": {
@@ -60,11 +60,11 @@ def make_response_create(tools: list[Callable]):
     }
 
 
-def make_session_update(tools: list[Callable]):
-    session_tools = []
+def make_session_update(tools: list[Callable]) -> dict[str, object]:
+    session_tools: list[dict[str, object]] = []
     for tool in tools:
-        tool = tool_to_tool_json(tool)
-        session_tools.append(tool)
+        tool_json = tool_to_tool_json(tool)
+        session_tools.append(tool_json)
     return {
         "type": "session.update",
         "session": {

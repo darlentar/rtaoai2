@@ -13,7 +13,7 @@ from rtaoai2.openai.producer import OpenAIEventProducer
 from rtaoai2.ui.consumer import EventConsumer
 from rtaoai2.ui.producer import EventProducer
 
-from pydub import AudioSegment
+from pydub import AudioSegment  # type: ignore[import-untyped]
 
 
 def audio_to_item_create_event(audio_bytes: bytes) -> str:
@@ -94,7 +94,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     url = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01"
     headers = {
-        "Authorization": f"Bearer {os.environ["OPENAI_API_KEY"]}",
+        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
         "OpenAI-Beta": "realtime=v1",
     }
     openai_ws = await websockets.connect(url, extra_headers=headers)
