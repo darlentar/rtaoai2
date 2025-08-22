@@ -73,7 +73,7 @@ class OpenAIWaitInputTranscriptEventConsumer:
         elif isinstance(event, ResponseDoneEvent):
             if self.response_audio_transcript_queue:
                 await self.response_producer.on_response_audio_transcript_delta_event(
-                    event
+                    self.response_audio_transcript_queue
                 )
                 self.response_audio_transcript_queue = ""
             await self.response_producer.on_response_done(event)
