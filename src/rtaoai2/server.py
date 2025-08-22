@@ -6,14 +6,14 @@ import base64
 
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.types import Message as WebSocketMessage
 import websockets
+from pydub import AudioSegment  # type: ignore[import-untyped]
 
 from rtaoai2.openai.consumer import OpenAIEventConsumer, OpenAIStreamingEventConsumer
 from rtaoai2.openai.producer import OpenAIEventProducer
 from rtaoai2.ui.consumer import EventConsumer
 from rtaoai2.ui.producer import EventProducer
-
-from pydub import AudioSegment
 
 
 def audio_to_item_create_event(audio_bytes: bytes) -> str:
@@ -46,7 +46,7 @@ app.add_middleware(
 
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(websocket: WebSocket) -> None:
     def get_product_remaining_stock(product_id: int) -> int:
         """Get product remaining stock given a product id."""
         try:
@@ -94,7 +94,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     url = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01"
     headers = {
-        "Authorization": f"Bearer {os.environ["OPENAI_API_KEY"]}",
+        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
         "OpenAI-Beta": "realtime=v1",
     }
     openai_ws = await websockets.connect(url, extra_headers=headers)
@@ -108,9 +108,9 @@ async def websocket_endpoint(websocket: WebSocket):
         OpenAIEventConsumer(), ui_event_producer
     )
 
-    async def client_websocket_handler():
+    async def client_websocket_handler() -> None:
         while True:
-            data = await websocket.receive()
+            data: WebSocketMessage = await websocket.receive()
 
             if "bytes" in data:
                 await ui_event_consumer.on_audio(
@@ -118,7 +118,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 )
                 await ui_event_consumer.on_response_create(tools=[])
 
-    async def openai_websocket_handler():
+    async def openai_websocket_handler() -> None:
         async for e in openai_ws:
             await openai_event_consumer.on_event(json.loads(e))
 
