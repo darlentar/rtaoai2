@@ -1,7 +1,7 @@
 # rtaoai2
 
 
-This project uses [uv](https://docs.astral.sh/uv/) and requires Python 3.13+.
+This project uses [uv](https://docs.astral.sh/uv/) and requires Python >=3.13 (as declared in `pyproject.toml`).
 To run it
 
 Run the backend
