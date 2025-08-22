@@ -3,7 +3,6 @@ import asyncio
 import json
 import os
 import base64
-from collections import defaultdict
 
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
@@ -48,7 +47,7 @@ app.add_middleware(
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    def get_product_remmaining_stock(product_id: int) -> int:
+    def get_product_remaining_stock(product_id: int) -> int:
         """Get product remaining stock given a product id."""
         try:
             return [1, 23, 244, 344, 123][product_id]
@@ -61,11 +60,11 @@ async def websocket_endpoint(websocket: WebSocket):
 
     # async def on_output_item_done(output_item: OutputItemDone):
     #     # TODO: make it dynamic
-    #     if output_item.item.name == "get_product_remmaining_stock":
+    #     if output_item.item.name == "get_product_remaining_stock":
     #         if output_item.item.arguments is None:
     #             raise ValueError("arguments can't be None")
     #         params = json.loads(output_item.item.arguments)
-    #         result = get_product_remmaining_stock(**params)
+    #         result = get_product_remaining_stock(**params)
     #         send_json = json.dumps(
     #             {
     #                 "type": "conversation.item.create",
