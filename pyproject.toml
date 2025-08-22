@@ -13,7 +13,7 @@ dependencies = [
     "pydub>=0.25.1",
 ]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">=3.13"
 
 [project.scripts]
 "rtaoai2" = "rtaoai2:main"
