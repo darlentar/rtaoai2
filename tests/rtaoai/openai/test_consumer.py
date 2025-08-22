@@ -1,12 +1,14 @@
-from rtaoai2.openai.events import ResponseAudioDeltaEvent
+from typing import Any
+
+import pytest
+
 from rtaoai2.openai.consumer import (
     OpenAIEventConsumer,
     UnknownEventError,
-    OpenAIWaitInputTranscriptEventConsumer,
     OpenAIStreamingEventConsumer,
+    OpenAIWaitInputTranscriptEventConsumer,
 )
-
-import pytest
+from rtaoai2.openai.events import ResponseAudioDeltaEvent
 
 
 @pytest.fixture
@@ -22,6 +24,44 @@ def test_process_response_audio_delta_event(event):
 def test_process_unhandled_event():
     with pytest.raises(UnknownEventError):
         OpenAIEventConsumer().process_event({"type": "unknown_event"})
+
+
+class TranscriptQueueSpy:
+    def __init__(self) -> None:
+        self.events: list[tuple[str, str | None]] = []
+
+    async def on_response_audio_delta_event(self, event: Any) -> None:
+        pass
+
+    async def on_response_audio_transcript_delta_event(self, transcript: str) -> None:
+        self.events.append(("transcript", transcript))
+
+    async def on_response_audio_input_transcript_done_event(self, event: Any) -> None:
+        pass
+
+    async def on_response_created(self, event: Any) -> None:
+        pass
+
+    async def on_response_done(self, event: Any) -> None:
+        self.events.append(("done", None))
+
+
+@pytest.mark.asyncio
+async def test_flush_transcript_queue_before_done() -> None:
+    spy = TranscriptQueueSpy()
+    consumer = OpenAIWaitInputTranscriptEventConsumer(
+        event_consumer=OpenAIEventConsumer(), response_producer=spy
+    )
+    await consumer.on_event(
+        {"type": "response.audio_transcript.delta", "delta": "Hello"}
+    )
+    await consumer.on_event(
+        {"type": "response.audio_transcript.delta", "delta": " world"}
+    )
+    await consumer.on_event({"type": "response.done"})
+
+    assert spy.events == [("transcript", "Hello world"), ("done", None)]
+    assert consumer.response_audio_transcript_queue == ""
 
 
 create_response = "crate_response"
