@@ -1,17 +1,14 @@
 import io
 import asyncio
-import json
 import os
 import base64
 
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.types import Message as WebSocketMessage
-import websockets
 from pydub import AudioSegment  # type: ignore[import-untyped]
+from openai import AsyncOpenAI
 
-from rtaoai2.openai.consumer import OpenAIEventConsumer, OpenAIStreamingEventConsumer
-from rtaoai2.openai.producer import OpenAIEventProducer
 from rtaoai2.ui.consumer import EventConsumer
 from rtaoai2.ui.producer import EventProducer
 
@@ -92,36 +89,46 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     #             }
     #         )
 
-    url = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01"
-    headers = {
-        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
-        "OpenAI-Beta": "realtime=v1",
-    }
-    openai_ws = await websockets.connect(url, extra_headers=headers)
+    client = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    async with client.realtime.connect(
+        model="gpt-4o-realtime-preview-2024-10-01",
+        headers={"OpenAI-Beta": "realtime=v1"},
+    ) as openai_ws:
+        await openai_ws.session.update(
+            session={
+                "tools": [],
+                "input_audio_transcription": {"model": "whisper-1"},
+            }
+        )
+        ui_event_consumer = EventConsumer(openai_ws)
+        ui_event_producer = EventProducer(websocket)
 
-    openai_event_producer = OpenAIEventProducer(openai_ws)
-    await openai_event_producer.make_session_update(tools=[])
-    ui_event_consumer = EventConsumer(openai_event_producer)
+        async def client_websocket_handler() -> None:
+            while True:
+                data: WebSocketMessage = await websocket.receive()
 
-    ui_event_producer = EventProducer(websocket)
-    openai_event_consumer = OpenAIStreamingEventConsumer(
-        OpenAIEventConsumer(), ui_event_producer
-    )
+                if "bytes" in data:
+                    await ui_event_consumer.on_audio(
+                        audio_to_item_create_event(data["bytes"])
+                    )
+                    await ui_event_consumer.on_response_create(tools=[])
 
-    async def client_websocket_handler() -> None:
-        while True:
-            data: WebSocketMessage = await websocket.receive()
+        async def openai_websocket_handler() -> None:
+            async for event in openai_ws:
+                event_type = event.get("type")
+                if event_type == "response.audio.delta":
+                    await ui_event_producer.on_response_audio_delta_event(event.get("delta", ""))
+                elif event_type == "response.audio_transcript.delta":
+                    delta = event.get("delta")
+                    if delta:
+                        await ui_event_producer.on_response_audio_transcript_delta_event(delta)
+                elif event_type == "conversation.item.input_audio_transcription.completed":
+                    await ui_event_producer.on_response_audio_input_transcript_done_event(
+                        event.get("transcript", "")
+                    )
+                elif event_type == "response.done":
+                    await ui_event_producer.on_response_done()
 
-            if "bytes" in data:
-                await ui_event_consumer.on_audio(
-                    audio_to_item_create_event(data["bytes"])
-                )
-                await ui_event_consumer.on_response_create(tools=[])
+        await websocket.accept()
 
-    async def openai_websocket_handler() -> None:
-        async for e in openai_ws:
-            await openai_event_consumer.on_event(json.loads(e))
-
-    await websocket.accept()
-
-    await asyncio.gather(openai_websocket_handler(), client_websocket_handler())
+        await asyncio.gather(openai_websocket_handler(), client_websocket_handler())
