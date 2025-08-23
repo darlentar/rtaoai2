@@ -9,24 +9,33 @@ import Conversations, {ConversationsModel} from './Conversations';
 // WebSocket URL (replace with your WebSocket server URL)
 const WEBSOCKET_URL = 'ws://127.0.0.1:8000/ws';
 
-function playPcm16Base64Audio(globalCurrentTime: MutableRefObject<number>, audioContext: MutableRefObject<AudioContext>, base64String: string, sampleRate = 16000, numChannels = 1) {
-  // Use globalCurrentTime to ensure that multiple function calls are scheduled properly
-  let startTime = Math.max(globalCurrentTime.current, audioContext.current.currentTime); // Ensure it's at least the current audio context time
-
+function playPcm16Base64Audio(
+  globalCurrentTime: MutableRefObject<number>,
+  audioContext: MutableRefObject<AudioContext>,
+  base64String: string,
+  sampleRate = 16000,
+  numChannels = 1,
+) {
   // Decode the base64 string to an ArrayBuffer
   const audioData = base64ToArrayBuffer(base64String);
 
-  // Convert PCM 16-bit little-endian to AudioBuffer
-  const audioBuffer = convertPcm16ToAudioBuffer(audioData, audioContext.current, sampleRate, numChannels);
+  // Convert PCM 16-bit little-endian to an AudioBuffer
+  const audioBuffer = convertPcm16ToAudioBuffer(
+    audioData,
+    audioContext.current,
+    sampleRate,
+    numChannels,
+  );
 
-  // Schedule the audio to play after the previous one finishes
+  // Schedule playback at the later of the queued time or the context time
+  const startTime = Math.max(
+    globalCurrentTime.current,
+    audioContext.current.currentTime,
+  );
   playAudioBuffer(audioBuffer, audioContext.current, startTime);
 
-  // Increment startTime for the next audio clip
-  startTime += audioBuffer.duration; // This makes sure the next clip is scheduled after the current one ends
-
-  // Update globalCurrentTime after the current array is scheduled
-  globalCurrentTime.current = startTime;
+  // Update the global time to keep subsequent chunks contiguous
+  globalCurrentTime.current = startTime + audioBuffer.duration;
 }
 
 // Helper function to decode base64 to ArrayBuffer
