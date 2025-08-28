@@ -46,10 +46,14 @@ app.add_middleware(
 async def websocket_endpoint(websocket: WebSocket) -> None:
     def get_product_remaining_stock(product_id: int) -> int:
         """Get product remaining stock given a product id."""
-        try:
-            return [1, 23, 244, 344, 123][product_id]
-        except IndexError:
+        # Product stock data - should be moved to a database in production
+        stock_data = {0: 1, 1: 23, 2: 244, 3: 344, 4: 123}
+        
+        # Validate product_id is non-negative and exists
+        if product_id < 0 or product_id not in stock_data:
             return 0
+        
+        return stock_data[product_id]
 
     def list_all_products() -> list[int]:
         """List all available products. Returns a list of int."""

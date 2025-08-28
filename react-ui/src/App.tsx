@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
+import React, { useState, useEffect, useRef, MutableRefObject, useCallback } from 'react';
 
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
@@ -88,7 +88,7 @@ function App() {
   const audioRef = useRef<Blob | null>(null);
   const [conversationItems, setConversationItems] = useState<ConversationModel[]>([]);
   const [conversation, setConversation] = useState<ConversationModel>(initConversation(0));
-  const [conversationIsFinished, setConversationIsFinished] = useState(false);
+  const [hasInputTranscript, setHasInputTranscript] = useState(false);
 
 
   const audioContext = useRef(new (window.AudioContext)());
@@ -101,15 +101,15 @@ function App() {
       const parsedEvent = JSON.parse(event.data);
       if(parsedEvent.type === "input_transcript") {
 	setConversation(c => ({...c, input_transcript: [...c.input_transcript, parsedEvent.data]}));
-	setConversationIsFinished(true);
+	setHasInputTranscript(true);
       }
-      if(parsedEvent.type === "transcript") {
+      else if(parsedEvent.type === "transcript") {
 	setConversation(c => ({...c, output_transcript: [...c.output_transcript, parsedEvent.data]}));
       }
-      else if(parsedEvent.type === "message" && parsedEvent.data === "response.done" && conversationIsFinished) {
+      else if(parsedEvent.type === "message" && parsedEvent.data === "response.done" && hasInputTranscript) {
 	setConversationItems(i => [conversation, ...i]);
 	setConversation(initConversation(conversationItems.length+1));
-	setConversationIsFinished(false);
+	setHasInputTranscript(false);
       }
       else if(parsedEvent.type === "audio") {
 	playPcm16Base64Audio(globalCurrentTime, audioContext, parsedEvent.data, 24000, 1);
@@ -122,11 +122,11 @@ function App() {
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
-	if (readyState != ReadyState.OPEN) return;
+	if (readyState !== ReadyState.OPEN) return;
 	const recorder = new MediaRecorder(stream, {
 	  mimeType: 'audio/webm;codecs=pcm', // Specify PCM format
 	});
-	mediaRef.current =recorder;
+	mediaRef.current = recorder;
 
 	recorder.ondataavailable = (event: BlobEvent) => {
 	  audioRef.current = event.data;
@@ -140,10 +140,8 @@ function App() {
 	    if (audioBlob) {
 	      sendMessage(audioBlob);
 	    }
-	  };
-	  if (mediaRef.current) {
-	    mediaRef.current.stop()
 	  }
+	  // Removed redundant mediaRef.current.stop() call - recorder is already stopped
 	}
       })
       .catch(error => {
@@ -152,9 +150,28 @@ function App() {
   }, [sendMessage, readyState]);
 
 
+  // Handle keydown event for space bar - memoized to prevent unnecessary re-renders
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.code === 'Space' && !isRecording && mediaRef.current) {
+      mediaRef.current.start();
+      setIsRecording(true);
+      console.log('Recording started...');
+    }
+  }, [isRecording]);
+
+  // Handle keyup event to stop recording - memoized to prevent unnecessary re-renders
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    if (event.code === 'Space' && isRecording && mediaRef.current) {
+      mediaRef.current.stop();
+      setIsRecording(false);
+      console.log('Recording stopped.');
+    }
+  }, [isRecording]);
+
   // Attach and detach event listeners for space bar
   useEffect(() => {
-    if (readyState != ReadyState.OPEN) return;
+    if (readyState !== ReadyState.OPEN) return;
+    
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
@@ -162,26 +179,7 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [isRecording, readyState]);
-
-
-  // Handle keydown event for space bar
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.code === 'Space' && !isRecording && mediaRef.current) {
-      mediaRef.current.start();
-      setIsRecording(true);
-      console.log('Recording started...');
-    }
-  };
-
-  // Handle keyup event to stop recording
-  const handleKeyUp = (event: KeyboardEvent) => {
-    if (event.code === 'Space' && isRecording && mediaRef.current) {
-      mediaRef.current.stop();
-      setIsRecording(false);
-      console.log('Recording stopped.');
-    }
-  };
+  }, [handleKeyDown, handleKeyUp, readyState]);
 
   return (
     <div>
